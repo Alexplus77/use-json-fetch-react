@@ -1,25 +1,15 @@
-import logo from './logo.svg';
-import './App.css';
+import "App.css";
+
+import { useJsonFetch } from "hooks/useJsonFetch";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const urlData = "http://localhost:7070/data";
+  const urlError = "http://localhost:7070/error";
+  const urlLoading = "http://localhost:7070/loading";
+
+  const [data, error, loading] = useJsonFetch(urlLoading);
+  console.log(data, error, loading);
+  return <div className="App"></div>;
 }
 
 export default App;
