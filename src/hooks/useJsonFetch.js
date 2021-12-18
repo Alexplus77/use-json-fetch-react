@@ -5,7 +5,7 @@ const useJsonFetch = (url, opts) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    fetch(url)
+    fetch(url, opts)
       .then((res) => res.json())
       .then((data) => setData(data))
       .catch((err) => setError(err))
