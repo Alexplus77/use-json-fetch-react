@@ -11,7 +11,7 @@ const useJsonFetch = (url, opts) => {
       .catch((err) => setError(err))
       .finally(() => setLoading(false));
   }, []);
-  return [data, error, loading];
+  return [{ data, error, loading }];
 };
 
 export { useJsonFetch };
