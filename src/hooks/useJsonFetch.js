@@ -5,14 +5,16 @@ const useJsonFetch = (url, opts, timeout) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [responseTimeout, setResponseTimout] = useState(null);
-
+  console.log();
   useEffect(() => {
     !timeout && (timeout = 10000);
 
     fetch(url, opts)
       .then((res) => res.json())
-      .then((data) => setData(data))
-      .catch((err) => setError(err))
+      .then((data) => {
+        data.status === "ok" ? setData(data) : setError(data);
+      })
+      .catch((err) => console.log(err))
       .finally(() => setLoading(false));
 
     const idTimer = setTimeout(() => {
@@ -22,7 +24,7 @@ const useJsonFetch = (url, opts, timeout) => {
   }, []);
 
   const responseFetch = () => {
-    if (responseTimeout) {
+    if (responseTimeout && !data && !error) {
       return "Превышено время ожидания";
     }
     if (data) {
