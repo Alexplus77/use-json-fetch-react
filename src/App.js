@@ -11,7 +11,7 @@ function App() {
   const opts = { method: "GET" };
 
   const [{ data, error, loading, responseFetch }] = useJsonFetch(
-    urlData,
+    urlLoading,
     opts,
     4000
   );

@@ -4,36 +4,36 @@ const useJsonFetch = (url, opts, timeout) => {
   const [error, setError] = useState(false);
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [responseTimeout, setResponseTimout] = useState(null);
-  console.log();
+  const [responseTimeout, setResponseTimout] = useState(false);
+
   useEffect(() => {
     !timeout && (timeout = 10000);
 
-    fetch(url, opts)
-      .then((res) => res.json())
-      .then((data) => {
-        data.status === "ok" ? setData(data) : setError(data);
-      })
-      .catch((err) => console.log(err))
-      .finally(() => setLoading(false));
+    const timeOutRes = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        reject(true);
+      }, timeout);
+    });
 
-    const idTimer = setTimeout(() => {
-      loading && setResponseTimout("Превышено время ожидания");
-    }, timeout);
-    return () => clearTimeout(idTimer);
+    Promise.race([fetch(url, opts).then((res) => res.json()), timeOutRes])
+      .then((dataRace) => {
+        dataRace.status === "ok" ? setData(dataRace) : setError(dataRace);
+      })
+      .catch((err) => setResponseTimout(err))
+      .finally(() => setLoading(false));
   }, []);
 
   const responseFetch = () => {
-    if (responseTimeout && !data && !error) {
-      return "Превышено время ожидания";
-    }
     if (data) {
       return `data status: ${data.status}`;
+    }
+    if (responseTimeout) {
+      return "Превышено время ожидания...";
     }
     if (error) {
       return "Произошла ошибка";
     }
-    if (loading && !responseTimeout) {
+    if (loading) {
       return "Loading...";
     }
   };
