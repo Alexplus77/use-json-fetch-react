@@ -1,14 +1,12 @@
 import { useEffect, useState } from "react";
 
-const useJsonFetch = (url, opts, timeout) => {
+const useJsonFetch = (url, opts, timeout = 10000) => {
   const [error, setError] = useState(false);
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [responseTimeout, setResponseTimout] = useState(false);
 
   useEffect(() => {
-    !timeout && (timeout = 10000);
-
     const timeOutRes = new Promise((resolve, reject) => {
       setTimeout(() => {
         reject(true);
