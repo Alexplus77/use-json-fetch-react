@@ -1,8 +1,5 @@
 import "App.css";
-
 import { useJsonFetch } from "hooks/useJsonFetch";
-import { useEffect } from "react";
-import { logDOM } from "@testing-library/react";
 
 function App() {
   const urlData = "http://localhost:7070/data";

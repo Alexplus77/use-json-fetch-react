@@ -4,13 +4,11 @@ const useJsonFetch = (url, opts, timeout = 10000) => {
   const [error, setError] = useState(false);
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [responseTimeout, setResponseTimout] = useState(false);
+  const [responseTimeout, setResponseTimout] = useState(null);
 
   useEffect(() => {
     const timeOutRes = new Promise((resolve, reject) => {
-      setTimeout(() => {
-        reject(true);
-      }, timeout);
+      setTimeout(reject, timeout, "Превышено время ожидания...");
     });
 
     Promise.race([fetch(url, opts).then((res) => res.json()), timeOutRes])
@@ -20,13 +18,13 @@ const useJsonFetch = (url, opts, timeout = 10000) => {
       .catch((err) => setResponseTimout(err))
       .finally(() => setLoading(false));
   }, []);
-
+  console.log(responseTimeout);
   const responseFetch = () => {
     if (data) {
       return `data status: ${data.status}`;
     }
     if (responseTimeout) {
-      return "Превышено время ожидания...";
+      return responseTimeout;
     }
     if (error) {
       return "Произошла ошибка";
