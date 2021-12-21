@@ -18,7 +18,7 @@ const useJsonFetch = (url, opts, timeout = 10000) => {
       .catch((err) => setResponseTimout(err))
       .finally(() => setLoading(false));
   }, []);
-  console.log(responseTimeout);
+
   const responseFetch = () => {
     if (data) {
       return `data status: ${data.status}`;
